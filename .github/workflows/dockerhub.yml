@@ -28,4 +28,4 @@ jobs:
           context: .
           platforms: linux/amd64
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/fiufit-trainers:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/fiufit-goals:latest
