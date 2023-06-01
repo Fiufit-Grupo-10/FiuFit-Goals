@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.api.trainers import routes as trainers_routes
+from app.api.goals import routes as goals_routes
 from app.config.database import DB_NAME, MONGO_URL
 from motor.motor_asyncio import AsyncIOMotorClient
 import asyncio
@@ -19,4 +19,4 @@ async def shutdown_db_client():
     app.mongodb_client.close()
 
 
-app.include_router(trainers_routes.router)
+app.include_router(goals_routes.router)
