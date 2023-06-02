@@ -16,12 +16,10 @@ class GoalType(str, Enum):
 class Goal(BaseModel):
     training_type: str = Field(...)
     amount: int = Field(...)
-    goal_type: GoalType                  
+    goal_type: GoalType
+
 
 class UserGoals(BaseModel):
     id: str = Field(default_factory=uuid4, alias="_id")
-    user_id : str = Field(...)
+    user_id: str = Field(...)
     goals: list[Goal]
-
-
-
