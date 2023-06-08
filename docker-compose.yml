@@ -10,4 +10,4 @@ services:
     volumes:
       - ./:/app
     environment:
-      - MONGO_URL=${MONGO_URL}
+      - MONGO_URL=${MONGO_GOALS_URL}
