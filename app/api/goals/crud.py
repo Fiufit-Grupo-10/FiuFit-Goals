@@ -18,6 +18,9 @@ async def update_user_goals(user_id: str, goals: list[Goal], request: Request):
     old_goals = await request.app.mongodb[GOALS_COLLECTION_NAME].find_one(
         {"user_id": user_id}
     )
+    if old_goals is None:
+        return None
+
     old_goals["goals"] = goals
     old_goals = jsonable_encoder(old_goals)
     await request.app.mongodb[GOALS_COLLECTION_NAME].delete_one(
