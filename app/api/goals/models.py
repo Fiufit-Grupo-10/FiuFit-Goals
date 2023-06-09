@@ -17,6 +17,7 @@ class Goal(BaseModel):
     training_type: str = Field(...)
     amount: int = Field(...)
     goal_type: GoalType
+    limit: str
 
 
 class UserGoals(BaseModel):
