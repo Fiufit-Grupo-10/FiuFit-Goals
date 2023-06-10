@@ -14,3 +14,15 @@ async def load_user_training(user_id: str, exercises: list[Exercise], request: R
         {"_id": new_training.inserted_id}
     )
     return created_training
+
+
+async def get_user_trainings(user_id: str, request: Request):
+    trainings = [
+        training
+        async for training in request.app.mongodb[TRAININGS_COLLECTION_NAME].find(
+            filter={"user_id": user_id}
+        )
+    ]
+    if len(trainings) == 0:
+        return None
+    return trainings
