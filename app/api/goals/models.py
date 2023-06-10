@@ -20,7 +20,17 @@ class Goal(BaseModel):
     limit: str
 
 
+class GoalReturn(Goal):
+    percentage: float = Field(
+        description="Indicates percetage of the goal achieved by the user", default=0.0
+    )
+    completed: bool = Field(
+        description="Indicates wheter the usar has/has not completed the goal",
+        default=False,
+    )
+
+
 class UserGoals(BaseModel):
     id: str = Field(default_factory=uuid4, alias="_id")
     user_id: str = Field(...)
-    goals: list[Goal]
+    goals: list[GoalReturn]
