@@ -14,6 +14,7 @@ class GoalType(str, Enum):
 
 
 class Goal(BaseModel):
+    title: str = Field(...)
     training_type: str = Field(...)
     amount: int = Field(...)
     goal_type: GoalType
