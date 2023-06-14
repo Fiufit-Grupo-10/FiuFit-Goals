@@ -10,6 +10,8 @@ async def create_user_goals(user_id: str, goals: list[Goal], request: Request):
     new_goals = await service.create_user_goals(
         user_id=user_id, goals=goals, request=request
     )
+    if new_goals is None:
+        raise HTTPException(status_code=409, detail=f"{user_id} goals already exist")
     return new_goals
 
 

@@ -6,6 +6,7 @@ import pytest
 def test_create_goals(test_app):
     goals = [
         {
+            "title": "meta1",
             "training_type": "Cardio",
             "amount": 100,
             "goal_type": "calories",
@@ -25,6 +26,7 @@ def test_create_goals(test_app):
 def test_create_goals_with_incorrect_type(test_app):
     goals = [
         {
+            "title": "meta1",
             "training_type": "Cardio",
             "amount": 100,
             "goal_type": "running",
@@ -42,12 +44,14 @@ def test_create_goals_with_incorrect_type(test_app):
 async def test_update_goals(test_app):
     goals = [
         {
+            "title": "meta1",
             "training_type": "Cardio",
             "amount": 100,
             "goal_type": "calories",
             "limit": "27-08-23",
         },
         {
+            "title": "meta2",
             "training_type": "Fuerza",
             "amount": 1000,
             "goal_type": "calories",
@@ -64,6 +68,7 @@ async def test_update_goals(test_app):
 
     updated_goals = [
         {
+            "title": "meta1",
             "training_type": "steps",
             "amount": 5000,
             "goal_type": "steps",
@@ -85,12 +90,14 @@ async def test_update_goals(test_app):
 async def test_get_goals(test_app):
     goals = [
         {
+            "title": "meta1",
             "training_type": "Cardio",
             "amount": 100,
             "goal_type": "calories",
             "limit": "27-08-23",
         },
         {
+            "title": "meta2",
             "training_type": "Fuerza",
             "amount": 1000,
             "goal_type": "calories",

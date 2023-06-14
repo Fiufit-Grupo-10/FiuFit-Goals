@@ -6,6 +6,11 @@ from app.api.goals.models import Goal
 
 
 async def create_user_goals(user_id: str, goals: list[Goal], request: Request):
+    old_goals = await goals_crud.get_user_goals(user_id=user_id,request=request)
+    # Todo: Quizas la mejor forma de manejarlo seria tirando una except
+    if old_goals is not None:
+        return None
+    
     goals = await goals_crud.create_user_goals(
         user_id=user_id, goals=goals, request=request
     )
