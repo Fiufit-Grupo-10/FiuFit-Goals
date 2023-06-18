@@ -78,6 +78,7 @@ def update_goals_status(goals, trainings):
             goal["percentage"] = 1
         else:
             goal["percentage"] = percentage
+            goal["completed"] = False
 
     return goals
 

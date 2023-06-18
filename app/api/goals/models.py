@@ -8,9 +8,10 @@ MAX_DESCRIPTION_LENGTH = 5000
 
 
 class GoalType(str, Enum):
-    steps = "steps"
-    calories = "calories"
     points = "points"
+    calories = "calories"
+    steps = "steps"    
+    
 
 
 class Goal(BaseModel):

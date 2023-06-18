@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Request
-from app.api.trainings_info import crud
-from app.api.trainings_info.models import Exercise, Training
+from app.api.trainings_info import crud, service
+from app.api.trainings_info.models import Exercise, Training, Dashboard
 
 
 router = APIRouter(tags=["training"])
@@ -20,3 +20,8 @@ async def get_trainings(user_id: str, request: Request):
     if new_training is None:
         raise HTTPException(status_code=404, detail=f"{user_id} trainings not found")
     return new_training
+
+@router.get("/users/{user_id}/training/metrics", response_model=Dashboard, status_code=200)
+async def get_trainings_metrics(user_id: str, request: Request):
+    panel = await service.get_user_training_metrics(user_id=user_id,request=request)
+    return panel
