@@ -21,7 +21,10 @@ async def get_trainings(user_id: str, request: Request):
         raise HTTPException(status_code=404, detail=f"{user_id} trainings not found")
     return new_training
 
-@router.get("/users/{user_id}/training/metrics", response_model=Dashboard, status_code=200)
+
+@router.get(
+    "/users/{user_id}/training/metrics", response_model=Dashboard, status_code=200
+)
 async def get_trainings_metrics(user_id: str, request: Request):
-    panel = await service.get_user_training_metrics(user_id=user_id,request=request)
+    panel = await service.get_user_training_metrics(user_id=user_id, request=request)
     return panel

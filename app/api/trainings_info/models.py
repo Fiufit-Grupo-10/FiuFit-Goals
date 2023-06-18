@@ -30,10 +30,10 @@ class Training(BaseModel):
     id: str = Field(default_factory=uuid4, alias="_id")
     user_id: str = Field(...)
     exercises: list[Exercise]
-    
+
+
 class Dashboard(BaseModel):
-    distance: float 
-    time: time 
-    calories: float 
-    milestones: int 
-    
+    distance: float
+    time: time
+    calories: float
+    milestones: int
