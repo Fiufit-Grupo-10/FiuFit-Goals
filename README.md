@@ -1,6 +1,6 @@
-![ci](https://github.com/Fiufit-Grupo-10/FiuFit-Trainers/actions/workflows/ci.yml/badge.svg)
-[![codecov](https://codecov.io/gh/Fiufit-Grupo-10/FiuFit-Trainers/branch/main/graph/badge.svg?token=RtE2x86dJV)](https://codecov.io/gh/Fiufit-Grupo-10/FiuFit-Trainers)
-# FiuFit-Trainers
+![ci](https://github.com/Fiufit-Grupo-10/FiuFit-Goals/actions/workflows/ci.yml/badge.svg)
+[![codecov](https://codecov.io/gh/Fiufit-Grupo-10/FiuFit-Goals/branch/main/graph/badge.svg?token=OINqsRu8Fg)](https://codecov.io/gh/Fiufit-Grupo-10/FiuFit-Goals)
+# FiuFit-Goals
 
 Microservice trainers implementation for Fiufit application
 
