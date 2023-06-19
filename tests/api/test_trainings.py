@@ -174,3 +174,17 @@ async def test_get_trainings_metrics_timestamp_filter():
     assert response.json()["time"] == "01:30:00"
     assert response.json()["calories"] == 653.3333333333334
     assert response.json()["milestones"] == 0
+
+
+@pytest.mark.anyio
+async def test_get_trainings_metrics_none():
+    async with AsyncClient(app=app, base_url="http://test") as ac:
+        response = await ac.get(
+            "/users/c59710ef-f5d0-41ba-a787-ad8eb739ef4c/training/metrics"
+        )
+
+    assert response.status_code == 200
+    assert response.json()["distance"] == 0
+    assert response.json()["time"] == "00:00:00"
+    assert response.json()["calories"] == 0
+    assert response.json()["milestones"] == 0
