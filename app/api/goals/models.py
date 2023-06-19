@@ -10,8 +10,7 @@ MAX_DESCRIPTION_LENGTH = 5000
 class GoalType(str, Enum):
     points = "points"
     calories = "calories"
-    steps = "steps"    
-    
+    steps = "steps"
 
 
 class Goal(BaseModel):
@@ -20,6 +19,10 @@ class Goal(BaseModel):
     amount: int = Field(...)
     goal_type: GoalType
     limit: str
+    notified: bool = Field(
+        description="Indicates wheter the user has been notified from this goal been achieved",
+        default=False,
+    )
 
 
 class GoalReturn(Goal):
