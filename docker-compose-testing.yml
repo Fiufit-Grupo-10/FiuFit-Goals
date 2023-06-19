@@ -41,6 +41,7 @@ services:
   ci-tests:
     build:
       context: .
+      dockerfile: Dockerfile.dev
     ports:
         - 8090:80
     volumes:
