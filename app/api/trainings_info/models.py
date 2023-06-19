@@ -10,7 +10,6 @@ class Exercise(BaseModel):
     exercise_type: str
     finished: bool
     time: time
-    updated: datetime = Field(default_factory=datetime.utcnow)
 
     class Config:
         allow_population_by_field_name = True
@@ -30,6 +29,7 @@ class Training(BaseModel):
     id: str = Field(default_factory=uuid4, alias="_id")
     user_id: str = Field(...)
     exercises: list[Exercise]
+    updated: datetime = Field(default_factory=datetime.utcnow)
 
 
 class Dashboard(BaseModel):

@@ -6,10 +6,15 @@ from app.api.trainings_info import crud as trainings_crud
 from app.api.trainings_info.models import Dashboard
 
 
-async def get_user_training_metrics(user_id: str, request: Request):
+async def get_user_training_metrics(
+    user_id: str,
+    request: Request,
+    start_date: str | None = None,
+    end_date: str | None = None,
+):
     dashboard = Dashboard(time="00:00:00", distance=0.0, milestones=0, calories=0)
     trainings = await trainings_crud.get_user_trainings(
-        user_id=user_id, request=request
+        user_id=user_id, request=request, end_date=end_date, start_date=start_date
     )
 
     if trainings is None:
@@ -42,11 +47,9 @@ async def get_user_training_metrics(user_id: str, request: Request):
                 + dashboard.time.second
             )
 
-            # Paso 3: Calcular la suma en horas, minutos y segundos
             hours, remainder = divmod(total_seconds, 3600)
             minutes, seconds = divmod(remainder, 60)
 
-            # Paso 4: Obtener el resultado como un nuevo objeto time
             result_time = datetime.time(hours, minutes, seconds)
             dashboard.time = result_time
 

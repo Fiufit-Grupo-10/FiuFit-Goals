@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Request, Query
 from app.api.trainings_info import crud, service
 from app.api.trainings_info.models import Exercise, Training, Dashboard
 
@@ -25,6 +25,14 @@ async def get_trainings(user_id: str, request: Request):
 @router.get(
     "/users/{user_id}/training/metrics", response_model=Dashboard, status_code=200
 )
-async def get_trainings_metrics(user_id: str, request: Request):
-    panel = await service.get_user_training_metrics(user_id=user_id, request=request)
+async def get_trainings_metrics(
+    user_id: str,
+    request: Request,
+    start_date: str
+    | None = Query(default=None, description="Start date in ISO format"),
+    end_date: str | None = Query(default=None, description="End date in ISO format"),
+):
+    panel = await service.get_user_training_metrics(
+        user_id=user_id, request=request, end_date=end_date, start_date=start_date
+    )
     return panel
