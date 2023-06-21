@@ -7,9 +7,8 @@ from app.api.goals.models import Goal
 
 async def create_user_goals(user_id: str, goals: list[Goal], request: Request):
     old_goals = await goals_crud.get_user_goals(user_id=user_id, request=request)
-    # Todo: Quizas la mejor forma de manejarlo seria tirando una except
     if old_goals is not None:
-        return None
+        raise Exception
 
     goals = await goals_crud.create_user_goals(
         user_id=user_id, goals=goals, request=request
@@ -25,7 +24,6 @@ async def create_user_goals(user_id: str, goals: list[Goal], request: Request):
     return update_goals_status(goals=goals, trainings=trainings)
 
 
-# todo: Probablemente se pueda refactorizar un poco mas,evitando mas repeticion de codigo
 async def update_user_goals(user_id: str, goals: list[Goal], request: Request):
     new_goals = await goals_crud.update_user_goals(
         user_id=user_id, goals=goals, request=request
@@ -86,13 +84,11 @@ def update_goals_status(goals, trainings):
 
 
 # Esto es lo de METS
-def get_calories(exercise_type, total_time):
-    # En principio toma el tiempo que se tardo (No creo que sea el merjo approach)
-    hours, minutes, seconds = map(int, total_time.split(":"))
-    time_obj = datetime.time(hours, minutes, seconds)
-    hours = time_obj.hour + time_obj.minute / 60 + time_obj.second / 3600
-
-    category_multipliers = {
+def get_calories(
+    exercise_type,
+    total_time,
+    peso=80,
+    category_multipliers={
         "Fuerza": 5,
         "Cardio": 7,
         "Yoga": 3,
@@ -105,5 +101,11 @@ def get_calories(exercise_type, total_time):
         "Spinning": 4,
         "Cinta": 4,
         "Estirar": 2,
-    }
-    return 80 * category_multipliers[exercise_type] * hours
+    },
+):
+    # En principio toma el tiempo que se tardo (No creo que sea el merjo approach)
+    hours, minutes, seconds = map(int, total_time.split(":"))
+    time_obj = datetime.time(hours, minutes, seconds)
+    hours = time_obj.hour + time_obj.minute / 60 + time_obj.second / 3600
+
+    return peso * category_multipliers[exercise_type] * hours

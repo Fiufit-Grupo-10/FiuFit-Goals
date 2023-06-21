@@ -55,8 +55,7 @@ services:
     networks:
       - fiufit_network
 
-    command: poetry run pytest -v --cov=app --cov-report term --cov-report xml:coverage.xml tests/
-    
+    command: poetry run pytest -v --cov=app --cov-report term --cov-report xml:coverage.xml tests/  
 
   mongodb:
     image: mongo:latest
