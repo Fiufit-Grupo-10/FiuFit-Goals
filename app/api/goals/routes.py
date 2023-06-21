@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Request, status
 from app.api.goals import service
-from app.api.goals.models import Goal, UserGoals, UserGoalsReturn
+from app.api.goals.models import Goal, UserGoalsReturn
 
 router = APIRouter(tags=["goals"])
 
@@ -24,7 +24,9 @@ async def create_user_goals(user_id: str, goals: list[Goal], request: Request):
 
 
 @router.put(
-    "/users/{user_id}/goals", response_model=UserGoalsReturn, status_code=status.HTTP_200_OK
+    "/users/{user_id}/goals",
+    response_model=UserGoalsReturn,
+    status_code=status.HTTP_200_OK,
 )
 async def update_user_goals(user_id: str, goals: list[Goal], request: Request):
     updated_goals = await service.update_user_goals(
@@ -38,7 +40,9 @@ async def update_user_goals(user_id: str, goals: list[Goal], request: Request):
 
 
 @router.get(
-    "/users/{user_id}/goals", response_model=UserGoalsReturn, status_code=status.HTTP_200_OK
+    "/users/{user_id}/goals",
+    response_model=UserGoalsReturn,
+    status_code=status.HTTP_200_OK,
 )
 async def get_user_goals(user_id: str, request: Request):
     goals = await service.get_user_goals(user_id=user_id, request=request)

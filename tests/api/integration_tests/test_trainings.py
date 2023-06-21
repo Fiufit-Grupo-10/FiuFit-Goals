@@ -6,7 +6,7 @@ import pytest
 
 
 @pytest.mark.anyio
-async def test_load_training(test_app,cleanup):
+async def test_load_training(test_app, cleanup):
     exercises = [
         {
             "name": "flexiones",
