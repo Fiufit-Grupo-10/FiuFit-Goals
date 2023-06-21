@@ -4,7 +4,7 @@ import pytest
 
 
 @pytest.mark.anyio
-async def test_create_goals(test_app):
+async def test_create_goals(test_app,cleanup):
     goals = [
         {
             "title": "meta1",
@@ -26,7 +26,7 @@ async def test_create_goals(test_app):
 
 
 @pytest.mark.anyio
-async def test_create_goals_error(test_app):
+async def test_create_goals_error(test_app,cleanup):
     goals = [
         {
             "title": "meta1",
@@ -51,7 +51,7 @@ async def test_create_goals_error(test_app):
 
 
 @pytest.mark.anyio
-async def test_create_goals_with_incorrect_type(test_app):
+async def test_create_goals_with_incorrect_type(test_app,cleanup):
     goals = [
         {
             "title": "meta1",
@@ -70,7 +70,7 @@ async def test_create_goals_with_incorrect_type(test_app):
 
 
 @pytest.mark.anyio
-async def test_update_goals(test_app):
+async def test_update_goals(test_app,cleanup):
     goals = [
         {
             "title": "meta1",
@@ -117,7 +117,7 @@ async def test_update_goals(test_app):
 
 
 @pytest.mark.anyio
-async def test_get_goals(test_app):
+async def test_get_goals(test_app,cleanup):
     goals = [
         {
             "title": "meta1",

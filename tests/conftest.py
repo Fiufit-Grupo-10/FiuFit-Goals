@@ -18,7 +18,7 @@ def test_app():
         yield test_client
 
 
-@fixture(autouse=True, scope="function")
+@fixture(scope="function")
 async def cleanup():
     yield
     await app.mongodb_client.drop_database(DB_NAME)

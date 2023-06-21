@@ -6,7 +6,7 @@ import pytest
 
 
 @pytest.mark.anyio
-async def test_load_training(test_app):
+async def test_load_training(test_app,cleanup):
     exercises = [
         {
             "name": "flexiones",
@@ -29,7 +29,7 @@ async def test_load_training(test_app):
 
 
 @pytest.mark.anyio
-async def test_get_trainings():
+async def test_get_trainings(cleanup):
     exercises = [
         {
             "name": "flexiones",
@@ -54,7 +54,7 @@ async def test_get_trainings():
 
 
 @pytest.mark.anyio
-async def test_get_trainings_metrics_all():
+async def test_get_trainings_metrics_all(cleanup):
     exercises1 = [
         {
             "name": "flexiones",
@@ -111,7 +111,7 @@ async def test_get_trainings_metrics_all():
 
 
 @pytest.mark.anyio
-async def test_get_trainings_metrics_timestamp_filter():
+async def test_get_trainings_metrics_timestamp_filter(cleanup):
     exercises1 = [
         {
             "name": "flexiones",
@@ -179,7 +179,7 @@ async def test_get_trainings_metrics_timestamp_filter():
 
 
 @pytest.mark.anyio
-async def test_get_trainings_metrics_none():
+async def test_get_trainings_metrics_none(cleanup):
     async with AsyncClient(app=app, base_url="http://test") as ac:
         response = await ac.get(
             "/users/c59710ef-f5d0-41ba-a787-ad8eb739ef4c/training/metrics"
@@ -193,7 +193,7 @@ async def test_get_trainings_metrics_none():
 
 
 @pytest.mark.anyio
-async def test_get_trainings_metrics_all_with_milestone():
+async def test_get_trainings_metrics_all_with_milestone(cleanup):
     exercises1 = [
         {
             "name": "flexiones",
