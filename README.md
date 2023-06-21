@@ -2,7 +2,7 @@
 [![codecov](https://codecov.io/gh/Fiufit-Grupo-10/FiuFit-Goals/branch/main/graph/badge.svg?token=OINqsRu8Fg)](https://codecov.io/gh/Fiufit-Grupo-10/FiuFit-Goals)
 # FiuFit-Goals
 
-Microservice trainers implementation for Fiufit application
+Microservice goals implementation for Fiufit application
 
 ## Running dev enviroment:
 
@@ -10,7 +10,7 @@ To set up the development environment for this microservice, you need to have Do
 ### 1. Clone this repository
 
 ```bash
-git clone git@github.com:Fiufit-Grupo-10/FiuFit-Trainers.git
+git clone git@github.com:Fiufit-Grupo-10/FiuFit-Goals.git
 ```
 ### 2. Navigate to the cloned repository and execute
 
@@ -27,6 +27,10 @@ sudo docker-compose -f docker-compose-testing.yml exec <command>
 
 To run tests
 
+```bash
+docker-compose -f docker-compose-testing.yml exec web pytest -vv
+```
+or
 ```bash
 docker-compose -f docker-compose-testing.yml run --rm tests
 ```
