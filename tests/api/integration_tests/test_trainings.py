@@ -5,7 +5,8 @@ from httpx import AsyncClient
 import pytest
 
 
-def test_load_training(test_app):
+@pytest.mark.anyio
+async def test_load_training(test_app):
     exercises = [
         {
             "name": "flexiones",
@@ -17,9 +18,10 @@ def test_load_training(test_app):
         }
     ]
 
-    response = test_app.post(
-        "/users/c59710ef-f5d0-41ba-a787-ad8eb739ef4c/training", json=exercises
-    )
+    async with AsyncClient(app=app, base_url="http://test") as ac:
+        response = await ac.post(
+            "/users/c59710ef-f5d0-41ba-a787-ad8eb739ef4c/training", json=exercises
+        )
     assert response.status_code == 201
 
     body = response.json()

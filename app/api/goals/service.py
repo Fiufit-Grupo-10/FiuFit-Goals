@@ -7,9 +7,8 @@ from app.api.goals.models import Goal
 
 async def create_user_goals(user_id: str, goals: list[Goal], request: Request):
     old_goals = await goals_crud.get_user_goals(user_id=user_id, request=request)
-    # Todo: Quizas la mejor forma de manejarlo seria tirando una except (IntegrityError?)
     if old_goals is not None:
-        return None
+        raise Exception
 
     goals = await goals_crud.create_user_goals(
         user_id=user_id, goals=goals, request=request
@@ -25,7 +24,6 @@ async def create_user_goals(user_id: str, goals: list[Goal], request: Request):
     return update_goals_status(goals=goals, trainings=trainings)
 
 
-# todo: Probablemente se pueda refactorizar un poco mas,evitando mas repeticion de codigo
 async def update_user_goals(user_id: str, goals: list[Goal], request: Request):
     new_goals = await goals_crud.update_user_goals(
         user_id=user_id, goals=goals, request=request

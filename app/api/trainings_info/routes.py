@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Request, Query
+from fastapi import APIRouter, HTTPException, Request, Query, status
 from app.api.trainings_info import crud, service
 from app.api.trainings_info.models import Exercise, Training, Dashboard
 
@@ -6,7 +6,11 @@ from app.api.trainings_info.models import Exercise, Training, Dashboard
 router = APIRouter(tags=["training"])
 
 
-@router.post("/users/{user_id}/training", response_model=Training, status_code=201)
+@router.post(
+    "/users/{user_id}/training",
+    response_model=Training,
+    status_code=status.HTTP_201_CREATED,
+)
 async def load_training(user_id: str, exercises: list[Exercise], request: Request):
     new_training = await crud.load_user_training(
         user_id=user_id, exercises=exercises, request=request
@@ -14,16 +18,25 @@ async def load_training(user_id: str, exercises: list[Exercise], request: Reques
     return new_training
 
 
-@router.get("/users/{user_id}/training", response_model=list[Training], status_code=200)
+@router.get(
+    "/users/{user_id}/training",
+    response_model=list[Training],
+    status_code=status.HTTP_200_OK,
+)
 async def get_trainings(user_id: str, request: Request):
     new_training = await crud.get_user_trainings(user_id=user_id, request=request)
     if new_training is None:
-        raise HTTPException(status_code=404, detail=f"{user_id} trainings not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"{user_id} trainings not found",
+        )
     return new_training
 
 
 @router.get(
-    "/users/{user_id}/training/metrics", response_model=Dashboard, status_code=200
+    "/users/{user_id}/training/metrics",
+    response_model=Dashboard,
+    status_code=status.HTTP_200_OK,
 )
 async def get_trainings_metrics(
     user_id: str,
