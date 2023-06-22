@@ -179,6 +179,76 @@ async def test_goals_update_goals_status_points(mock_get_calories):
 
 @patch("app.api.goals.service.get_calories")
 @pytest.mark.anyio
+async def test_goals_update_goals_status_steps(mock_get_calories):
+    mock_get_calories.return_value = 700
+
+    goals = {
+        "_id": "1",
+        "user_id": "10",
+        "goals": [
+            {
+                "title": "Meta de steps",
+                "training_type": "Cardio",
+                "amount": 1000,
+                "goal_type": "steps",
+                "limit": "-",
+                "notified": False,
+                "percentage": 0,
+                "completed": False,
+            },
+        ],
+    }
+
+    trainings = [
+        {
+            "_id": "1",
+            "user_id": "10",
+            "exercises": [
+                {
+                    "name": "caminar",
+                    "category": "repeticiones",
+                    "amount": 5,
+                    "exercise_type": "Cardio",
+                    "finished": True,
+                    "time": "00:05:00",
+                    "steps": 300,
+                },
+                {
+                    "name": "correr",
+                    "category": "tiempo",
+                    "amount": 10,
+                    "exercise_type": "Cardio",
+                    "finished": True,
+                    "time": "00:10:00",
+                    "steps": 800,
+                },
+            ],
+            "updated": "2023-06-19T04:04:21.410Z",
+        },
+    ]
+
+    response = update_goals_status(goals=goals, trainings=trainings)
+    mock_get_calories.assert_not_called()
+    assert response == {
+        "_id": "1",
+        "user_id": "10",
+        "goals": [
+            {
+                "title": "Meta de steps",
+                "training_type": "Cardio",
+                "amount": 1000,
+                "goal_type": "steps",
+                "limit": "-",
+                "notified": False,
+                "percentage": 100,
+                "completed": True,
+            },
+        ],
+    }
+
+
+@patch("app.api.goals.service.get_calories")
+@pytest.mark.anyio
 async def test_goals_update_goals_status_all(mock_get_calories):
     mock_get_calories.side_effect = [280, 560]
 

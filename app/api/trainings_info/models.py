@@ -10,6 +10,7 @@ class Exercise(BaseModel):
     exercise_type: str
     finished: bool
     time: time
+    steps: int
 
     class Config:
         allow_population_by_field_name = True
@@ -21,6 +22,7 @@ class Exercise(BaseModel):
                 "exercise_type": "Fuerza",
                 "finished": True,
                 "time": "01:10:15",
+                "steps": 50,
             }
         }
 
@@ -33,7 +35,7 @@ class Training(BaseModel):
 
 
 class Dashboard(BaseModel):
-    distance: float
+    distance: float = Field(description="Distance in meters")
     time: time
     calories: float
     milestones: int

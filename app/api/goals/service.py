@@ -69,6 +69,8 @@ def update_goals_status(goals, trainings):
                             exercise_type=exercise["exercise_type"],
                             total_time=exercise["time"],
                         )
+                    if goal_type == "steps":
+                        score += exercise["steps"]
 
         percentage = 0
         if score > 0:
@@ -83,7 +85,7 @@ def update_goals_status(goals, trainings):
     return goals
 
 
-# Esto es lo de METS
+# METS
 def get_calories(
     exercise_type,
     total_time,
@@ -103,7 +105,6 @@ def get_calories(
         "Estirar": 2,
     },
 ):
-    # En principio toma el tiempo que se tardo (No creo que sea el merjo approach)
     hours, minutes, seconds = map(int, total_time.split(":"))
     time_obj = datetime.time(hours, minutes, seconds)
     hours = time_obj.hour + time_obj.minute / 60 + time_obj.second / 3600

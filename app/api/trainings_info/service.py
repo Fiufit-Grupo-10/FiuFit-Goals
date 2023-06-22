@@ -50,5 +50,6 @@ async def get_user_training_metrics(
 
             result_time = datetime.time(hours, minutes, seconds)
             dashboard.time = result_time
+            dashboard.distance += exercise["steps"] * 0.75
 
     return dashboard
