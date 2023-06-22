@@ -15,6 +15,7 @@ async def test_load_training(test_app, cleanup):
             "exercise_type": "Fuerza",
             "finished": True,
             "time": "01:10:15",
+            "steps": 100,
         }
     ]
 
@@ -38,6 +39,7 @@ async def test_get_trainings(cleanup):
             "exercise_type": "Fuerza",
             "finished": True,
             "time": "01:10:15",
+            "steps": 100,
         }
     ]
 
@@ -63,6 +65,7 @@ async def test_get_trainings_metrics_all(cleanup):
             "exercise_type": "Fuerza",
             "finished": True,
             "time": "01:10:00",
+            "steps": 100,
         },
         {
             "name": "Correr",
@@ -71,6 +74,7 @@ async def test_get_trainings_metrics_all(cleanup):
             "exercise_type": "Cardio",
             "finished": True,
             "time": "00:20:00",
+            "steps": 3000,
         },
     ]
 
@@ -82,6 +86,7 @@ async def test_get_trainings_metrics_all(cleanup):
             "exercise_type": "Cardio",
             "finished": True,
             "time": "00:30:00",
+            "steps": 4400,
         }
     ]
 
@@ -104,7 +109,7 @@ async def test_get_trainings_metrics_all(cleanup):
         )
 
     assert response.status_code == 200
-    assert response.json()["distance"] == 0
+    assert response.json()["distance"] == 5625
     assert response.json()["time"] == "02:00:00"
     assert response.json()["calories"] == 933.3333333333334
     assert response.json()["milestones"] == 0
@@ -120,6 +125,7 @@ async def test_get_trainings_metrics_timestamp_filter(cleanup):
             "exercise_type": "Fuerza",
             "finished": True,
             "time": "01:10:00",
+            "steps": 100,
         },
         {
             "name": "Correr",
@@ -128,6 +134,7 @@ async def test_get_trainings_metrics_timestamp_filter(cleanup):
             "exercise_type": "Cardio",
             "finished": True,
             "time": "00:20:00",
+            "steps": 3000,
         },
     ]
 
@@ -139,6 +146,7 @@ async def test_get_trainings_metrics_timestamp_filter(cleanup):
             "exercise_type": "Cardio",
             "finished": True,
             "time": "00:30:00",
+            "steps": 4400,
         }
     ]
 
@@ -172,7 +180,7 @@ async def test_get_trainings_metrics_timestamp_filter(cleanup):
         )
 
     assert response.status_code == 200
-    assert response.json()["distance"] == 0
+    assert response.json()["distance"] == 2325
     assert response.json()["time"] == "01:30:00"
     assert response.json()["calories"] == 653.3333333333334
     assert response.json()["milestones"] == 0
@@ -202,6 +210,7 @@ async def test_get_trainings_metrics_all_with_milestone(cleanup):
             "exercise_type": "Fuerza",
             "finished": True,
             "time": "01:10:00",
+            "steps": 100,
         },
         {
             "name": "Correr",
@@ -210,6 +219,7 @@ async def test_get_trainings_metrics_all_with_milestone(cleanup):
             "exercise_type": "Cardio",
             "finished": True,
             "time": "00:20:00",
+            "steps": 3000,
         },
     ]
 
@@ -221,6 +231,7 @@ async def test_get_trainings_metrics_all_with_milestone(cleanup):
             "exercise_type": "Cardio",
             "finished": True,
             "time": "00:30:00",
+            "steps": 4400,
         }
     ]
 
@@ -259,7 +270,7 @@ async def test_get_trainings_metrics_all_with_milestone(cleanup):
         )
 
     assert response.status_code == 200
-    assert response.json()["distance"] == 0
+    assert response.json()["distance"] == 5625
     assert response.json()["time"] == "02:00:00"
     assert response.json()["calories"] == 933.3333333333334
     assert response.json()["milestones"] == 1
