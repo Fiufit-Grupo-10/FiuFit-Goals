@@ -3,10 +3,15 @@ from app.api.goals import routes as goals_routes
 from app.api.trainings_info import routes as training_routes
 from app.config.database import DB_NAME, MONGO_URL
 from motor.motor_asyncio import AsyncIOMotorClient
+from ddtrace.contrib.asgi import TraceMiddleware
+from ddtrace import config
 import asyncio
+
+config.fastapi['service_name'] = 'goals-service'
 
 app = FastAPI()
 
+app.add_middleware(TraceMiddleware)
 
 @app.on_event("startup")
 async def startup_db_client():
