@@ -7,11 +7,12 @@ from ddtrace.contrib.asgi import TraceMiddleware
 from ddtrace import config
 import asyncio
 
-config.fastapi['service_name'] = 'goals-service'
+config.fastapi["service_name"] = "goals-service"
 
 app = FastAPI()
 
 app.add_middleware(TraceMiddleware)
+
 
 @app.on_event("startup")
 async def startup_db_client():
