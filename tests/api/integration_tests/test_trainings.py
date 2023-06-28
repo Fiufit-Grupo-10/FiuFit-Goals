@@ -7,17 +7,20 @@ import pytest
 
 @pytest.mark.anyio
 async def test_load_training(test_app, cleanup):
-    exercises = [
-        {
-            "name": "flexiones",
-            "category": "repeticiones",
-            "amount": "20",
-            "exercise_type": "Fuerza",
-            "finished": True,
-            "time": "01:10:15",
-            "steps": 100,
-        }
-    ]
+    exercises = {
+        "training_id": "123",
+        "exercises": [
+            {
+                "name": "flexiones",
+                "category": "repeticiones",
+                "amount": "20",
+                "exercise_type": "Fuerza",
+                "finished": True,
+                "time": "01:10:15",
+                "steps": 100,
+            }
+        ],
+    }
 
     async with AsyncClient(app=app, base_url="http://test") as ac:
         response = await ac.post(
@@ -31,17 +34,20 @@ async def test_load_training(test_app, cleanup):
 
 @pytest.mark.anyio
 async def test_get_trainings(cleanup):
-    exercises = [
-        {
-            "name": "flexiones",
-            "category": "repeticiones",
-            "amount": "20",
-            "exercise_type": "Fuerza",
-            "finished": True,
-            "time": "01:10:15",
-            "steps": 100,
-        }
-    ]
+    exercises = {
+        "training_id": "123",
+        "exercises": [
+            {
+                "name": "flexiones",
+                "category": "repeticiones",
+                "amount": "20",
+                "exercise_type": "Fuerza",
+                "finished": True,
+                "time": "01:10:15",
+                "steps": 100,
+            }
+        ],
+    }
 
     async with AsyncClient(app=app, base_url="http://test") as ac:
         response = await ac.post(
@@ -57,38 +63,44 @@ async def test_get_trainings(cleanup):
 
 @pytest.mark.anyio
 async def test_get_trainings_metrics_all(cleanup):
-    exercises1 = [
-        {
-            "name": "flexiones",
-            "category": "repeticiones",
-            "amount": "20",
-            "exercise_type": "Fuerza",
-            "finished": True,
-            "time": "01:10:00",
-            "steps": 100,
-        },
-        {
-            "name": "Correr",
-            "category": "tiempo",
-            "amount": "20",
-            "exercise_type": "Cardio",
-            "finished": True,
-            "time": "00:20:00",
-            "steps": 3000,
-        },
-    ]
+    exercises1 = {
+        "training_id": "123",
+        "exercises": [
+            {
+                "name": "flexiones",
+                "category": "repeticiones",
+                "amount": "20",
+                "exercise_type": "Fuerza",
+                "finished": True,
+                "time": "01:10:00",
+                "steps": 100,
+            },
+            {
+                "name": "Correr",
+                "category": "tiempo",
+                "amount": "20",
+                "exercise_type": "Cardio",
+                "finished": True,
+                "time": "00:20:00",
+                "steps": 3000,
+            },
+        ],
+    }
 
-    exercises2 = [
-        {
-            "name": "Correr",
-            "category": "tiempo",
-            "amount": "30",
-            "exercise_type": "Cardio",
-            "finished": True,
-            "time": "00:30:00",
-            "steps": 4400,
-        }
-    ]
+    exercises2 = {
+        "training_id": "124",
+        "exercises": [
+            {
+                "name": "Correr",
+                "category": "tiempo",
+                "amount": "30",
+                "exercise_type": "Cardio",
+                "finished": True,
+                "time": "00:30:00",
+                "steps": 4400,
+            }
+        ],
+    }
 
     async with AsyncClient(app=app, base_url="http://test") as ac:
         response1 = await ac.post(
@@ -117,38 +129,44 @@ async def test_get_trainings_metrics_all(cleanup):
 
 @pytest.mark.anyio
 async def test_get_trainings_metrics_timestamp_filter(cleanup):
-    exercises1 = [
-        {
-            "name": "flexiones",
-            "category": "repeticiones",
-            "amount": "20",
-            "exercise_type": "Fuerza",
-            "finished": True,
-            "time": "01:10:00",
-            "steps": 100,
-        },
-        {
-            "name": "Correr",
-            "category": "tiempo",
-            "amount": "20",
-            "exercise_type": "Cardio",
-            "finished": True,
-            "time": "00:20:00",
-            "steps": 3000,
-        },
-    ]
+    exercises1 = {
+        "training_id": "123",
+        "exercises": [
+            {
+                "name": "flexiones",
+                "category": "repeticiones",
+                "amount": "20",
+                "exercise_type": "Fuerza",
+                "finished": True,
+                "time": "01:10:00",
+                "steps": 100,
+            },
+            {
+                "name": "Correr",
+                "category": "tiempo",
+                "amount": "20",
+                "exercise_type": "Cardio",
+                "finished": True,
+                "time": "00:20:00",
+                "steps": 3000,
+            },
+        ],
+    }
 
-    exercises2 = [
-        {
-            "name": "Correr",
-            "category": "tiempo",
-            "amount": "30",
-            "exercise_type": "Cardio",
-            "finished": True,
-            "time": "00:30:00",
-            "steps": 4400,
-        }
-    ]
+    exercises2 = {
+        "training_id": "124",
+        "exercises": [
+            {
+                "name": "Correr",
+                "category": "tiempo",
+                "amount": "30",
+                "exercise_type": "Cardio",
+                "finished": True,
+                "time": "00:30:00",
+                "steps": 4400,
+            }
+        ],
+    }
 
     async with AsyncClient(app=app, base_url="http://test") as ac:
         response1 = await ac.post(
@@ -202,38 +220,44 @@ async def test_get_trainings_metrics_none(cleanup):
 
 @pytest.mark.anyio
 async def test_get_trainings_metrics_all_with_milestone(cleanup):
-    exercises1 = [
-        {
-            "name": "flexiones",
-            "category": "repeticiones",
-            "amount": "20",
-            "exercise_type": "Fuerza",
-            "finished": True,
-            "time": "01:10:00",
-            "steps": 100,
-        },
-        {
-            "name": "Correr",
-            "category": "tiempo",
-            "amount": "20",
-            "exercise_type": "Cardio",
-            "finished": True,
-            "time": "00:20:00",
-            "steps": 3000,
-        },
-    ]
+    exercises1 = {
+        "training_id": "123",
+        "exercises": [
+            {
+                "name": "flexiones",
+                "category": "repeticiones",
+                "amount": "20",
+                "exercise_type": "Fuerza",
+                "finished": True,
+                "time": "01:10:00",
+                "steps": 100,
+            },
+            {
+                "name": "Correr",
+                "category": "tiempo",
+                "amount": "20",
+                "exercise_type": "Cardio",
+                "finished": True,
+                "time": "00:20:00",
+                "steps": 3000,
+            },
+        ],
+    }
 
-    exercises2 = [
-        {
-            "name": "Correr",
-            "category": "tiempo",
-            "amount": "30",
-            "exercise_type": "Cardio",
-            "finished": True,
-            "time": "00:30:00",
-            "steps": 4400,
-        }
-    ]
+    exercises2 = {
+        "training_id": "124",
+        "exercises": [
+            {
+                "name": "Correr",
+                "category": "tiempo",
+                "amount": "30",
+                "exercise_type": "Cardio",
+                "finished": True,
+                "time": "00:30:00",
+                "steps": 4400,
+            }
+        ],
+    }
 
     async with AsyncClient(app=app, base_url="http://test") as ac:
         response1 = await ac.post(

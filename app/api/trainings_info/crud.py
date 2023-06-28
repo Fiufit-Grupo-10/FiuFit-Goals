@@ -4,8 +4,10 @@ from app.api.trainings_info.models import Exercise, Training
 from app.config.database import TRAININGS_COLLECTION_NAME
 
 
-async def load_user_training(user_id: str, exercises: list[Exercise], request: Request):
-    training = Training(user_id=user_id, exercises=exercises)
+async def post_user_training(
+    user_id: str, exercises: list[Exercise], training_id: str, request: Request
+):
+    training = Training(user_id=user_id, exercises=exercises, training_id=training_id)
     training = jsonable_encoder(training)
     new_training = await request.app.mongodb[TRAININGS_COLLECTION_NAME].insert_one(
         training
@@ -33,4 +35,15 @@ async def get_user_trainings(
     ]
     if len(trainings) == 0:
         return None
+    return trainings
+
+
+async def get_trainings_by_id(training_id: str, request: Request):
+    query = {"training_id": training_id}
+    trainings = [
+        training
+        async for training in request.app.mongodb[TRAININGS_COLLECTION_NAME].find(
+            filter=query
+        )
+    ]
     return trainings
