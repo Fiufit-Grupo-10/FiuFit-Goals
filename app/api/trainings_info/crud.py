@@ -36,3 +36,14 @@ async def get_user_trainings(
     if len(trainings) == 0:
         return None
     return trainings
+
+
+async def get_trainings_by_id(training_id: str, request: Request):
+    query = {"training_id": training_id}
+    trainings = [
+        training
+        async for training in request.app.mongodb[TRAININGS_COLLECTION_NAME].find(
+            filter=query
+        )
+    ]
+    return trainings

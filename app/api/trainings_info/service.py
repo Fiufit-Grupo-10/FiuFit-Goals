@@ -1,9 +1,15 @@
 import datetime
 from fastapi import Request
+import httpx
 from app.api.goals.crud import get_user_goals
 from app.api.goals.service import update_goals_status, get_calories
-from app.api.trainings_info.crud import get_user_trainings, post_user_training
+from app.api.trainings_info.crud import (
+    get_user_trainings,
+    post_user_training,
+    get_trainings_by_id,
+)
 from app.api.trainings_info.models import Dashboard, Exercise
+from app.config.database import METRICS_SERVICE_URL
 
 
 async def get_user_training_metrics(
@@ -61,4 +67,21 @@ async def load_user_training(
     new_training = await post_user_training(
         user_id=user_id, exercises=exercises, training_id=training_id, request=request
     )
+
+    # Check enviroment variable
+    if METRICS_SERVICE_URL != "":
+        trainings = await get_trainings_by_id(training_id=training_id, request=request)
+        metrics = {"metric": "usage", "completed_counter": 0, "fulfilled_counter": 0}
+
+        for training in trainings:
+            completed = True
+            for exercise in training["exercises"]:
+                if exercise["finished"] is False:
+                    completed = False
+            metrics["fulfilled_counter"] += 1
+            metrics["completed_counter"] += int(completed)
+        # Update metric
+        url = METRICS_SERVICE_URL + "/metrics/trainings/" + training_id
+        httpx.put(url, json=metrics)
+
     return new_training
