@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Request, Query, status
 from app.api.trainings_info import crud, service
-from app.api.trainings_info.models import Exercise, Training, Dashboard
+from app.api.trainings_info.models import ExerciseRequest, Training, Dashboard
 
 
 router = APIRouter(tags=["training"])
@@ -11,9 +11,12 @@ router = APIRouter(tags=["training"])
     response_model=Training,
     status_code=status.HTTP_201_CREATED,
 )
-async def load_training(user_id: str, exercises: list[Exercise], request: Request):
-    new_training = await crud.load_user_training(
-        user_id=user_id, exercises=exercises, request=request
+async def load_training(user_id: str, exercises: ExerciseRequest, request: Request):
+    new_training = await service.load_user_training(
+        user_id=user_id,
+        exercises=exercises.exercises,
+        training_id=exercises.training_id,
+        request=request,
     )
     return new_training
 

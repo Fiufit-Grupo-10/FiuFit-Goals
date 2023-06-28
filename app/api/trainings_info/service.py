@@ -2,8 +2,8 @@ import datetime
 from fastapi import Request
 from app.api.goals.crud import get_user_goals
 from app.api.goals.service import update_goals_status, get_calories
-from app.api.trainings_info.crud import get_user_trainings
-from app.api.trainings_info.models import Dashboard
+from app.api.trainings_info.crud import get_user_trainings, post_user_training
+from app.api.trainings_info.models import Dashboard, Exercise
 
 
 async def get_user_training_metrics(
@@ -53,3 +53,12 @@ async def get_user_training_metrics(
             dashboard.distance += exercise["steps"] * 0.75
 
     return dashboard
+
+
+async def load_user_training(
+    user_id: str, exercises: list[Exercise], training_id: str, request: Request
+):
+    new_training = await post_user_training(
+        user_id=user_id, exercises=exercises, training_id=training_id, request=request
+    )
+    return new_training

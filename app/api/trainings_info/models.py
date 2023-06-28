@@ -27,9 +27,15 @@ class Exercise(BaseModel):
         }
 
 
+class ExerciseRequest(BaseModel):
+    training_id: str = Field(...)
+    exercises: list[Exercise]
+
+
 class Training(BaseModel):
     id: str = Field(default_factory=uuid4, alias="_id")
     user_id: str = Field(...)
+    training_id: str = Field(...)
     exercises: list[Exercise]
     updated: datetime = Field(default_factory=datetime.utcnow)
 
