@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException, Request, status
 from app.api.goals import service
 from app.api.goals.models import Goal, UserGoalsReturn
+from app.config.config import logger
 
 router = APIRouter(tags=["goals"])
 
@@ -11,6 +12,7 @@ router = APIRouter(tags=["goals"])
     status_code=status.HTTP_201_CREATED,
 )
 async def create_user_goals(user_id: str, goals: list[Goal], request: Request):
+    logger.info("Create user Goals request", user=user_id)
     try:
         new_goals = await service.create_user_goals(
             user_id=user_id, goals=goals, request=request
@@ -29,6 +31,7 @@ async def create_user_goals(user_id: str, goals: list[Goal], request: Request):
     status_code=status.HTTP_200_OK,
 )
 async def update_user_goals(user_id: str, goals: list[Goal], request: Request):
+    logger.info("Update user Goals request", user=user_id)
     updated_goals = await service.update_user_goals(
         user_id=user_id, goals=goals, request=request
     )
@@ -45,6 +48,7 @@ async def update_user_goals(user_id: str, goals: list[Goal], request: Request):
     status_code=status.HTTP_200_OK,
 )
 async def get_user_goals(user_id: str, request: Request):
+    logger.info("Get user Goals request", user=user_id)
     goals = await service.get_user_goals(user_id=user_id, request=request)
     if goals is None:
         raise HTTPException(
