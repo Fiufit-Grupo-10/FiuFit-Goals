@@ -1,8 +1,10 @@
 import datetime
 from fastapi import Request
+import httpx
 from app.api.goals import crud as goals_crud
 from app.api.trainings_info import crud as trainings_crud
 from app.api.goals.models import Goal
+from app.config.config import USERS_SERVICE_URL, DEFAULT_WEIGTH, CATEGORY_MULTIPLIERS
 
 
 async def create_user_goals(user_id: str, goals: list[Goal], request: Request):
@@ -21,7 +23,9 @@ async def create_user_goals(user_id: str, goals: list[Goal], request: Request):
     if trainings is None:
         return goals
 
-    return update_goals_status(goals=goals, trainings=trainings)
+    weigth = get_user_weigth(user_id=user_id)
+
+    return update_goals_status(goals=goals, trainings=trainings, weigth=weigth)
 
 
 async def update_user_goals(user_id: str, goals: list[Goal], request: Request):
@@ -36,7 +40,9 @@ async def update_user_goals(user_id: str, goals: list[Goal], request: Request):
     if trainings is None:
         return new_goals
 
-    return update_goals_status(goals=new_goals, trainings=trainings)
+    weigth = get_user_weigth(user_id=user_id)
+
+    return update_goals_status(goals=new_goals, trainings=trainings, weigth=weigth)
 
 
 async def get_user_goals(user_id: str, request: Request):
@@ -51,10 +57,12 @@ async def get_user_goals(user_id: str, request: Request):
     if trainings is None:
         return new_goals
 
-    return update_goals_status(goals=new_goals, trainings=trainings)
+    weigth = get_user_weigth(user_id=user_id)
+
+    return update_goals_status(goals=new_goals, trainings=trainings, weigth=weigth)
 
 
-def update_goals_status(goals, trainings):
+def update_goals_status(goals, trainings, weigth):
     for goal in goals["goals"]:
         goal_type = goal["goal_type"]
         goal_training_type = goal["training_type"]
@@ -68,6 +76,7 @@ def update_goals_status(goals, trainings):
                         score += get_calories(
                             exercise_type=exercise["exercise_type"],
                             total_time=exercise["time"],
+                            weigth=weigth,
                         )
                     if goal_type == "steps":
                         score += exercise["steps"]
@@ -89,24 +98,20 @@ def update_goals_status(goals, trainings):
 def get_calories(
     exercise_type,
     total_time,
-    peso=80,
-    category_multipliers={
-        "Fuerza": 5,
-        "Cardio": 7,
-        "Yoga": 3,
-        "Pilates": 4,
-        "Baile": 4,
-        "Meditacion": 1,
-        "Hiit": 10,
-        "Kickboxing": 10,
-        "Tonificacion": 4,
-        "Spinning": 4,
-        "Cinta": 4,
-        "Estirar": 2,
-    },
+    weigth,
+    category_multipliers=CATEGORY_MULTIPLIERS,
 ):
     hours, minutes, seconds = map(int, total_time.split(":"))
     time_obj = datetime.time(hours, minutes, seconds)
     hours = time_obj.hour + time_obj.minute / 60 + time_obj.second / 3600
 
-    return peso * category_multipliers[exercise_type] * hours
+    return weigth * category_multipliers[exercise_type] * hours
+
+
+def get_user_weigth(user_id: str) -> int:
+    if USERS_SERVICE_URL != "":
+        url = USERS_SERVICE_URL + "users/" + user_id
+        response = httpx.get(url)
+        return response.json()["weigth"]
+    else:
+        return DEFAULT_WEIGTH
