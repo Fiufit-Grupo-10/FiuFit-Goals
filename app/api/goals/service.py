@@ -137,6 +137,6 @@ def get_user_weigth(user_id: str) -> int:
         if response.status_code != 200:
             logger.error("Unable to reach user service")
             return DEFAULT_WEIGTH
-        return response.json()["weigth"]
+        return response.json()["weight"]
     else:
         return DEFAULT_WEIGTH
