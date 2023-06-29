@@ -4,9 +4,9 @@ import structlog
 import logging
 
 from structlog.types import Processor
-
 METRICS_SERVICE_URL = os.getenv("METRICS_SERVICE_URL", "")
 USERS_SERVICE_URL = os.getenv("USERS_SERVICE_URL", "")
+DEV_ENV = os.getenv("DEV", "false").lower()
 DEFAULT_WEIGTH = 80
 CATEGORY_MULTIPLIERS = {
     "Fuerza": 5,

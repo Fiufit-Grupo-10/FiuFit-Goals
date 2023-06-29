@@ -6,13 +6,14 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from ddtrace.contrib.asgi import TraceMiddleware
 from ddtrace import config
 import asyncio
-from app.config.config import logger
+from app.config.config import DEV_ENV, logger
 
 config.fastapi["service_name"] = "goals-service"
 
 app = FastAPI()
 
-app.add_middleware(TraceMiddleware)
+if DEV_ENV == "true":
+    app.add_middleware(TraceMiddleware)
 
 
 @app.on_event("startup")
