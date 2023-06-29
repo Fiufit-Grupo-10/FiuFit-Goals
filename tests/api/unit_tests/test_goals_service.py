@@ -8,7 +8,7 @@ async def test_goals_get_calories():
     response = get_calories(
         exercise_type="Fuerza",
         total_time="01:30:00",
-        peso=80,
+        weigth=80,
         category_multipliers={"Fuerza": 5},
     )
     assert response == 600
@@ -54,7 +54,7 @@ async def test_goals_update_goals_status_calories(mock_get_calories):
         }
     ]
 
-    response = update_goals_status(goals=goals, trainings=trainings)
+    response = update_goals_status(goals=goals, trainings=trainings, weigth=80)
     mock_get_calories.assert_called()
     assert response == {
         "_id": "1",
@@ -147,7 +147,7 @@ async def test_goals_update_goals_status_points(mock_get_calories):
         },
     ]
 
-    response = update_goals_status(goals=goals, trainings=trainings)
+    response = update_goals_status(goals=goals, trainings=trainings, weigth=80)
     mock_get_calories.assert_not_called()
     assert response == {
         "_id": "1",
@@ -227,7 +227,7 @@ async def test_goals_update_goals_status_steps(mock_get_calories):
         },
     ]
 
-    response = update_goals_status(goals=goals, trainings=trainings)
+    response = update_goals_status(goals=goals, trainings=trainings, weigth=80)
     mock_get_calories.assert_not_called()
     assert response == {
         "_id": "1",
@@ -320,7 +320,7 @@ async def test_goals_update_goals_status_all(mock_get_calories):
         },
     ]
 
-    response = update_goals_status(goals=goals, trainings=trainings)
+    response = update_goals_status(goals=goals, trainings=trainings, weigth=80)
     assert mock_get_calories.call_count == 2
     assert response == {
         "_id": "1",

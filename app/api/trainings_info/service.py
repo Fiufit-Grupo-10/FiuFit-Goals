@@ -2,14 +2,14 @@ import datetime
 from fastapi import Request
 import httpx
 from app.api.goals.crud import get_user_goals
-from app.api.goals.service import update_goals_status, get_calories
+from app.api.goals.service import update_goals_status, get_calories, get_user_weigth
 from app.api.trainings_info.crud import (
     get_user_trainings,
     post_user_training,
     get_trainings_by_id,
 )
 from app.api.trainings_info.models import Dashboard, Exercise
-from app.config.database import METRICS_SERVICE_URL
+from app.config.config import METRICS_SERVICE_URL
 
 
 async def get_user_training_metrics(
@@ -28,8 +28,12 @@ async def get_user_training_metrics(
 
     goals = await get_user_goals(user_id=user_id, request=request)
 
+    weigth = get_user_weigth(user_id=user_id)
+
     if goals is not None:
-        goals_status = update_goals_status(goals=goals, trainings=trainings)
+        goals_status = update_goals_status(
+            goals=goals, trainings=trainings, weigth=weigth
+        )
         for goal in goals_status["goals"]:
             if goal["completed"]:
                 dashboard.milestones += 1
@@ -39,6 +43,7 @@ async def get_user_training_metrics(
             dashboard.calories += get_calories(
                 exercise_type=exercise["exercise_type"],
                 total_time=exercise["time"],
+                weigth=weigth,
             )
             hours, minutes, seconds = map(int, exercise["time"].split(":"))
             time_obj = datetime.time(hours, minutes, seconds)
