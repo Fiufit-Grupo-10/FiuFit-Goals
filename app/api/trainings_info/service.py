@@ -95,8 +95,8 @@ async def load_user_training(
             for exercise in training["exercises"]:
                 if exercise["finished"] is False:
                     completed = False
-            metrics["fulfilled_counter"] += 1
-            metrics["completed_counter"] += int(completed)
+            metrics["metric"]["fulfilled_counter"] += 1
+            metrics["metric"]["completed_counter"] += int(completed)
         # Update metric
         logger.info("Reaching metrics service", user=user_id, request=metrics)
         url = METRICS_SERVICE_URL + "metrics/trainings/" + training_id
