@@ -81,7 +81,7 @@ async def load_user_training(
             metrics["fulfilled_counter"] += 1
             metrics["completed_counter"] += int(completed)
         # Update metric
-        url = METRICS_SERVICE_URL + "/metrics/trainings/" + training_id
+        url = METRICS_SERVICE_URL + "metrics/trainings/" + training_id
         httpx.put(url, json=metrics)
 
     return new_training
