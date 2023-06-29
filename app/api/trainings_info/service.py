@@ -10,6 +10,7 @@ from app.api.trainings_info.crud import (
 )
 from app.api.trainings_info.models import Dashboard, Exercise
 from app.config.config import METRICS_SERVICE_URL
+from app.config.config import logger
 
 
 async def get_user_training_metrics(
@@ -19,16 +20,19 @@ async def get_user_training_metrics(
     end_date: str | None = None,
 ):
     dashboard = Dashboard(time="00:00:00", distance=0.0, milestones=0, calories=0)
+    logger.info("Starting to caclulate training metrics", user=user_id)
     trainings = await get_user_trainings(
         user_id=user_id, request=request, end_date=end_date, start_date=start_date
     )
 
     if trainings is None:
+        logger.info("Trainings not found", user=user_id)
         return dashboard
 
     goals = await get_user_goals(user_id=user_id, request=request)
 
     weigth = get_user_weigth(user_id=user_id)
+    logger.info("Weigth", user=user_id, weight=weigth)
 
     if goals is not None:
         goals_status = update_goals_status(
@@ -38,6 +42,7 @@ async def get_user_training_metrics(
             if goal["completed"]:
                 dashboard.milestones += 1
 
+    logger.info("Calculating calories, time and distance", user=user_id)
     for training in trainings:
         for exercise in training["exercises"]:
             dashboard.calories += get_calories(
@@ -75,8 +80,15 @@ async def load_user_training(
 
     # Check enviroment variable
     if METRICS_SERVICE_URL != "":
+        logger.info("Reaching metrics service", user=user_id)
         trainings = await get_trainings_by_id(training_id=training_id, request=request)
-        metrics = {"metric": "usage", "completed_counter": 0, "fulfilled_counter": 0}
+        metrics = {
+            "metric": {
+                "metric_type": "usage",
+                "completed_counter": 0,
+                "fulfilled_counter": 0,
+            }
+        }
 
         for training in trainings:
             completed = True
@@ -86,7 +98,12 @@ async def load_user_training(
             metrics["fulfilled_counter"] += 1
             metrics["completed_counter"] += int(completed)
         # Update metric
+        logger.info("Reaching metrics service", user=user_id, request=metrics)
         url = METRICS_SERVICE_URL + "metrics/trainings/" + training_id
-        httpx.put(url, json=metrics)
+        response = httpx.put(url, json=metrics)
+        if response.status_code not in [200, 201]:
+            logger.error(
+                "Metrics service error", user=user_id, status_code=response.status_code
+            )
 
     return new_training

@@ -6,6 +6,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from ddtrace.contrib.asgi import TraceMiddleware
 from ddtrace import config
 import asyncio
+from app.config.config import logger
 
 config.fastapi["service_name"] = "goals-service"
 
@@ -19,6 +20,7 @@ async def startup_db_client():
     app.mongodb_client = AsyncIOMotorClient(MONGO_URL)
     app.mongodb_client.get_io_loop = asyncio.get_event_loop
     app.mongodb = app.mongodb_client[DB_NAME]
+    logger.info("Succesfully connected to database")
 
 
 @app.on_event("shutdown")
