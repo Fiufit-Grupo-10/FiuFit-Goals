@@ -35,12 +35,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: push-docker-image
     steps:      
-      - name: checkout
-        uses: actions/checkout@v3
+#       - name: checkout
+#         uses: actions/checkout@v3
 
-      - uses: okteto/context@latest
-        with:
-          token: ${{ secrets.OKTETO_TOKEN }}
+#       - uses: okteto/context@latest
+#         with:
+#           token: ${{ secrets.OKTETO_TOKEN }}
      
       - name: Rollout deployment
         env:
